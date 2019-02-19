@@ -100,7 +100,12 @@
         width="50%"
         @close="editDialogClose"
       >
-        <el-form ref="editFormRef" :model="editForm" :rules="editFormRules" @close="editDialogClose">
+        <el-form
+          ref="editFormRef"
+          :model="editForm"
+          :rules="editFormRules"
+          @close="editDialogClose"
+        >
           <el-form-item label="用户名" prop="username">
             <el-input v-model="editForm.username"></el-input>
           </el-form-item>
