@@ -6,6 +6,8 @@ import Login from '@/components/Login'
 import Home from '@/components/Home'
 // 导入Welcome组件
 import Welcome from '@/components/Welcome'
+// 导入用户组件
+import User from '@/components/User'
 Vue.use(Router)
 var router = new Router({
   routes: [
@@ -18,6 +20,10 @@ var router = new Router({
         {
           path: '/welcome',
           component: Welcome
+        },
+        {
+          path: '/users',
+          component: User
         }
       ]
     }

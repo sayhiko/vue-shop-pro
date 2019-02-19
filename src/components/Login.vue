@@ -32,8 +32,8 @@ export default {
     return {
       // 登录表单需要的数据对象
       loginForm: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: '123456'
       },
       rules: {
         // required非空验证  message错误信息提醒 trigger失去焦点触发校验
