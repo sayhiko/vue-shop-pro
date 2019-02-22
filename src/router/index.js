@@ -10,6 +10,8 @@ import Welcome from '@/components/Welcome'
 import User from '@/components/User'
 // 导入权限组件
 import Rights from '@/components/Rights'
+// 导入角色组件
+import Roles from '@/components/Roles'
 Vue.use(Router)
 var router = new Router({
   routes: [
@@ -30,6 +32,10 @@ var router = new Router({
         {
           path: '/rights',
           component: Rights
+        },
+        {
+          path: '/roles',
+          component: Roles
         }
       ]
     }

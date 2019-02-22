@@ -57,7 +57,12 @@
               ></el-button>
             </el-tooltip>
             <el-tooltip content="分配角色" placement="top" :enterable="false">
-              <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+              <el-button
+                type="warning"
+                icon="el-icon-setting"
+                size="mini"
+                @click="showFenpeiDialog(info.row.id)"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -119,6 +124,37 @@
         <span slot="footer" class="dialog-footer">
           <el-button @click="editDialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="editUser">确 定</el-button>
+        </span>
+      </el-dialog>
+      <!-- 分配角色对话框 -->
+      <el-dialog
+        title="分配角色"
+        :visible.sync="fenpeiDialogVisible"
+        width="50%"
+        @close="fenpeiDialogClose"
+      >
+        <el-form
+          ref="fenpeiFormRef"
+          :model="fenpeiForm"
+          :rules="fenpeiFormRules"
+          @close="fenpeiDialogClose"
+          label-width="120px"
+        >
+          <el-form-item label="当前用户:" prop="username">{{fenpeiForm.username}}</el-form-item>
+          <el-form-item label="分配的角色:" prop="rid">
+            <el-select v-model="fenpeiForm.rid" placeholder="请选择">
+              <el-option
+                v-for="item in roleInfos"
+                :key="item.id"
+                :label="item.roleName"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="fenpeiDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="fenpeiUser">确 定</el-button>
         </span>
       </el-dialog>
     </el-card>
@@ -193,6 +229,22 @@ export default {
           // {validator:校验函数}
           { validator: checkMobile, trigger: 'change' }
         ]
+      },
+      // 分配角色相关
+      fenpeiDialogVisible: false,
+      // 接收供选择的角色信息
+      roleInfos: [],
+      // 分配角色表单需要的数据
+      fenpeiForm: {
+        username: '',
+        // 当前被修改用户的id
+        id: 0,
+        // 角色id
+        rid: 0
+      },
+      // 表单校验
+      fenpeiFormRules: {
+        rid: [{ required: true, message: '角色必选', trigger: 'change' }]
       }
     }
   },
@@ -279,6 +331,10 @@ export default {
           }
           // 删除成功 刷新数据 提示成功
           this.$message.success(res.meta.msg)
+          // 判断当前页码只有一条数据且已经被删除,也不是首页,就让页码减一返回上一页
+          if (this.userInfos.length === 1 && this.querycbt.pagenum > 1) {
+            this.querycbt.pagenum--
+          }
           this.getUserInfos()
         })
         .catch(() => {})
@@ -318,6 +374,52 @@ export default {
     // 重置表单
     editDialogClose() {
       this.$refs.editFormRef.resetFields()
+    },
+    // 分配角色相关
+    // 显示分配角色的对话框
+    async showFenpeiDialog(id) {
+      // 显示对话框
+      this.fenpeiDialogVisible = true
+      // 根据id获取当前分配角色的用户信息
+      const { data: res } = await this.$http.get('users/' + id)
+      if (res.meta.status !== 200) {
+        return this.$message.error(res.meta.msg)
+      }
+      // 获取成功,赋值给fenpeiForm
+      this.fenpeiForm = res.data
+      // 设置rid
+      if (this.fenpeiForm.rid === 0) {
+        this.fenpeiForm.rid = ''
+      }
+      // 获取供选择的角色信息
+      const { data: res2 } = await this.$http.get('roles')
+      if (res2.meta.status !== 200) {
+        return this.$message.error(res2.data.msg)
+      }
+      // 赋值给roleInfos
+      this.roleInfos = res2.data
+    },
+    // 分配角色提交
+    fenpeiUser() {
+      this.$refs.fenpeiFormRef.validate(async valid => {
+        if (valid) {
+          const { data: res } = await this.$http.put(
+            'users/' + this.fenpeiForm.id + '/role',
+            this.fenpeiForm
+          )
+          if (res.meta.status !== 200) {
+            return this.$message.error(res.meta.msg)
+          }
+          // 提交成功 刷新列表 关闭对话框 提示成功
+          this.fenpeiDialogVisible = false
+          this.$message.success(res.meta.msg)
+          this.getUserInfos()
+        }
+      })
+    },
+    // 重置表单
+    fenpeiDialogClose() {
+      this.$refs.fenpeiFormRef.resetFields()
     }
   }
 }
