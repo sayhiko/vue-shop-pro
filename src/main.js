@@ -9,6 +9,10 @@ import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
 // 引入組件庫
 import ElementUI from 'element-ui'
+// 引入table-tree
+import ZkTable from 'vue-table-with-tree-grid'
+// 注册ZKTable
+Vue.use(ZkTable)
 // 把elementUI注册给Vue
 Vue.use(ElementUI)
 // 配置axios请求根地址

@@ -90,8 +90,8 @@
         </el-table-column>
       </el-table>
       <!-- 添加角色对话框 -->
-      <el-dialog title="添加角色" :visible.sync="addDialogVisible" width="50%">
-        <el-form ref="addFormRef" :model="addForm" :rules="addFormRules" @close="addDialogClose">
+      <el-dialog title="添加角色" :visible.sync="addDialogVisible" width="50%"  @close="addDialogClose">
+        <el-form ref="addFormRef" :model="addForm" :rules="addFormRules">
           <el-form-item label="角色名称" prop="roleName">
             <el-input v-model="addForm.roleName"></el-input>
           </el-form-item>
@@ -188,8 +188,8 @@ export default {
       // 默认对话框不显示
       distributeDialogVisible: false,
       distributeForm: {
-        // 被分配权限的角色的id
-        id: '',
+        // 被分配权限的角色的id,默认为0 是数字类型
+        id: 0,
         // 被分配权限的角色名称
         roleName: ''
       },
@@ -280,7 +280,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       })
-        .then(async () => {
+        .then(async() => {
           const { data: res } = await this.$http.delete('roles/' + id)
           if (res.meta.status !== 200) {
             return this.$message.error(res.meta.msg)
@@ -298,7 +298,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       })
-        .then(async () => {
+        .then(async() => {
           // 向后端发送axios请求
           const { data: res } = await this.$http.delete(
             'roles/' + roleId + '/rights/' + rightsId

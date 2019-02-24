@@ -12,6 +12,10 @@ import User from '@/components/User'
 import Rights from '@/components/Rights'
 // 导入角色组件
 import Roles from '@/components/Roles'
+// 导入Cat组件
+import Cat from '@/components/Cat'
+// 引入params组件
+import Params from '@/components/Params'
 Vue.use(Router)
 var router = new Router({
   routes: [
@@ -36,6 +40,14 @@ var router = new Router({
         {
           path: '/roles',
           component: Roles
+        },
+        {
+          path: '/categories',
+          component: Cat
+        },
+        {
+          path: '/params',
+          component: Params
         }
       ]
     }
