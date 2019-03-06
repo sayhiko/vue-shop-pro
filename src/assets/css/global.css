@@ -26,3 +26,14 @@ i.iconfont {
     margin-top: 15px;
     font-size:12px;
 }
+/* 给步骤条steps设置样式 */
+.el-step_title {
+    font-size: 12px;
+}
+.el-tabs--left .el-tabs__item.is-left {
+    margin-bottom: 50px;
+}
+/* 给富文本框设置高度 */
+.ql-editor {
+    height: 300px;
+}

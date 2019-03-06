@@ -16,6 +16,12 @@ import Roles from '@/components/Roles'
 import Cat from '@/components/Cat'
 // 引入params组件
 import Params from '@/components/Params'
+// 引入Goods组件
+import Goods from '@/components/Goods'
+// 引入GoodsAdd组件
+import GoodsAdd from '@/components/GoodsAdd'
+// 引入Report组件
+import Report from '@/components/Report'
 Vue.use(Router)
 var router = new Router({
   routes: [
@@ -48,6 +54,18 @@ var router = new Router({
         {
           path: '/params',
           component: Params
+        },
+        {
+          path: '/goods',
+          component: Goods
+        },
+        {
+          path: '/goodsadd',
+          component: GoodsAdd
+        },
+        {
+          path: '/reports',
+          component: Report
         }
       ]
     }

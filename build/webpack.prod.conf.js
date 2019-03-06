@@ -21,6 +21,17 @@ const webpackConfig = merge(baseWebpackConfig, {
       usePostCSS: true
     })
   },
+  // 配置引入外网的静态资源模块
+  externals:{
+    // 语法:模块名称:构造函数
+    // 构造函数:模块被引入后给系统增加的全局变量名,window可以调用
+    // 模块名称:import *** from '模块名称'
+    'vue':'Vue', //之后不打包,用外网提供
+    'axios':'axios',
+    'vue-router':'VueRouter',
+    'echarts':'echarts',
+    'nprogress':'NProgress'
+  },
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
